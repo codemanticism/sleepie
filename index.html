@@ -60,7 +60,7 @@ function loop(){
 	const seconds = unix % 60;
 	const minutes = Math.floor(unix / 60) % 60; 
 	const utchours = Math.floor(unix / 3600) % 24;
-	const hours = utchours - 3;
+	const hours = utchours;
 	if(right_time == false){
 		if((right_hour == hours) && (right_minute == minutes)){
 			right_time = true;
