@@ -13,7 +13,7 @@
 }
 </style>
 </head>
-<body>
+<body onclick="sync()">
 <div id="c" style="font-size: 100px;display:inline">
 <input id="right_hour" type="number" style="width:300px;font-size: 100px" placeholder="H"></input><h2 style="display:inline">:</h2><input id="right_minute" type="number" style="width:300px;font-size: 100px" placeholder="M"></input>
 <br>
@@ -34,6 +34,9 @@ function tostring(number){
 	}else{
 		return String(number);
 	}
+}
+function sync(){
+	time = Date.now();
 }
 function go(){
 	const string = window.location.href;	
@@ -60,7 +63,7 @@ function loop(){
 	const seconds = unix % 60;
 	const minutes = Math.floor(unix / 60) % 60; 
 	const utchours = Math.floor(unix / 3600) % 24;
-	const hours = Date.now() - utchours;
+	const hours = utchours - 3;
 	if(right_time == false){
 		if((right_hour == hours) && (right_minute == minutes)){
 			right_time = true;
@@ -81,7 +84,7 @@ try{
 		right_minute = Number(what_comes_after_the_question_mark[1]);
 		right_hour = Number(what_comes_after_the_question_mark[0]);
 		right_time = false;
-		time = Date.now();
+		sync();
 		loop();
 		div.style.display = "none";		
 	}
