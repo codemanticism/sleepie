@@ -14,20 +14,19 @@
 </style>
 </head>
 <body>
-<div style="text-align: center; font-family: 200px">
-<input id="right_hour" type="number" style="display:inline;width:60px" placeholder="H"></input>
-<h2 style="display:inline">:</h2>
-<input id="right_minute" type="number" style="display:inline;width:60px" placeholder="M"></input>
-<button onclick="go()">Go!</button>
+<div id="c" style="font-size: 100px;display:inline">
+<input id="right_hour" type="number" style="width:300px;font-size: 100px" placeholder="H"></input><h2 style="display:inline">:</h2><input id="right_minute" type="number" style="width:300px;font-size: 100px" placeholder="M"></input>
+<br>
+<button style="font-size:200px" onclick="go()">Go!</button>
 </div>
-<h1 hidden style="text-align: center; color: green; font-family: 400px">00:00</h1>
+<div hidden style="text-align: center; color: green; font-size: 200px">00:00</div>
 <script>
 let right_minutes = 0;
 let right_hours = 0; 
 let time = 0;
-const h1 = document.getElementsByTagName("h1")[0];
+const h1 = document.getElementsByTagName("div")[1];
 const url = window.location.href;
-const div = document.getElementsByTagName("div")[0];
+const div = document.getElementById("c");
 
 function tostring(number){
 	if(number < 10){
@@ -65,7 +64,7 @@ function loop(){
 	if(right_time == false){
 		if((right_hour == hours) && (right_minute == minutes)){
 			right_time = true;
-			document.getElementsByTagName("h1")[0].hidden = false;
+			h1.hidden = false;
 			document.body.style.backgroundColor = "cyan";
 		}
 	}
@@ -78,12 +77,13 @@ function loop(){
 try{
 	const what_comes_after_the_question_mark = url.split("?")[1].split(":");	
 	if(what_comes_after_the_question_mark.length == 2){
+		debugger;
 		right_minute = Number(what_comes_after_the_question_mark[1]);
 		right_hour = Number(what_comes_after_the_question_mark[0]);
 		right_time = false;
 		time = Date.now();
 		loop();
-		div.hidden = true;
+		div.style.display = "none";		
 	}
 }catch(error){
 	console.log(error);
