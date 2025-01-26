@@ -1,0 +1,13 @@
+{
+  "name": "Sleepie Beta",
+  "short_name": "Sleepie",
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/740/740878.png",
+      "type": "image/png","sizes": "128x128"
+    }
+  ]
+}

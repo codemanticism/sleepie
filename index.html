@@ -1,0 +1,92 @@
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+<style>
+* {
+  font-family: "Orbitron", serif;
+  font-weight: 400;
+  font-style: normal;
+  color: green;
+}
+</style>
+</head>
+<body>
+<div style="text-align: center">
+<input id="right_hour" type="number" style="display:inline; " placeholder="HOUR"></input>
+<p style="display:inline">:</h2>
+<input id="right_minute" type="number" style="display:inline" placeholder="MIN"></input>
+<button onclick="go()">Go!</button>
+</div>
+<h1 hidden style="text-align: center; color: green">00:00</h1>
+<script>
+let right_minutes = 0;
+let right_hours = 0; 
+let time = 0;
+const h1 = document.getElementsByTagName("h1")[0];
+const url = window.location.href;
+const div = document.getElementsByTagName("div")[0];
+
+function tostring(number){
+	if(number < 10){
+		return '0' + number;
+	}else{
+		return String(number);
+	}
+}
+function go(){
+	const string = window.location.href;	
+	const index = string.indexOf('?');
+	let res = "";
+	if(index == -1){
+		res = string;
+	}else{
+		res = string.substring(0, index);
+	}
+	let m = Number(document.getElementById("right_minute").value);
+	let h = Number(document.getElementById("right_hour").value);
+	if(h >= 24){
+		return;
+	}
+	if(m >= 60){
+		return;
+	}
+	window.location.href = res + "?" + tostring(h) + ":" + tostring(m);
+}
+
+function loop(){
+	const unix = Math.floor(time / 1000);
+	const seconds = unix % 60;
+	const minutes = Math.floor(unix / 60) % 60; 
+	const utchours = Math.floor(unix / 3600) % 24;
+	const hours = utchours - 3;
+	if(right_time == false){
+		if((right_hour == hours) && (right_minute == minutes)){
+			right_time = true;
+			document.getElementsByTagName("h1")[0].hidden = false;
+			document.body.style.backgroundColor = "cyan";
+		}
+	}
+	if(right_time){
+		h1.innerHTML = tostring(hours - 3) + ":" + tostring(minutes) + ":" + tostring(seconds);
+	}
+	time += 1000;
+	window.setTimeout(loop, 1000);	
+}
+try{
+	const what_comes_after_the_question_mark = url.split("?")[1].split(":");	
+	if(what_comes_after_the_question_mark.length == 2){
+		right_minute = Number(what_comes_after_the_question_mark[1]);
+		right_hour = Number(what_comes_after_the_question_mark[0]);
+		right_time = false;
+		time = Date.now();
+		loop();
+		div.hidden = true;
+	}
+}catch(error){
+	console.log(error);
+}
+</script>
+</body>
+</html>
