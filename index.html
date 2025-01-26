@@ -18,11 +18,12 @@
 <br>
 <button style="font-size:200px" onclick="go()">Go!</button>
 </div>
-<div hidden style="text-align: center; color: green; font-size: 200px">00:00</div>
+<div hidden style="text-align: center; font-size: 200px">00:00</div>
 <script>
 let right_minutes = 0;
 let right_hours = 0; 
 let time = 0;
+let count = 0;
 const h1 = document.getElementsByTagName("div")[1];
 const url = window.location.href;
 const div = document.getElementById("c");
@@ -56,7 +57,51 @@ function go(){
 	}
 	window.location.href = res + "?" + tostring(h) + ":" + tostring(m);
 }
-
+function outside(number){
+	if(number > 255){
+		return true;
+	}else if(number < 0){
+		return true;
+	}
+	return false;
+}
+function loop2(_red, _green, _blue){
+	const rand = Math.random();
+	const rand2 = Math.random();
+	let signs = [0, 0, 0];
+	for(let i = 0; i < 3; i++){
+		if(Math.random() > 0.5){
+			signs[i] = -1;
+		}else{
+			signs[i] = 1;
+		}
+	}
+	let s = 75;
+	let red = 0;
+	let green = 0;
+	let blue = 0;
+	red = _red + (s * rand * signs[0]);
+	if(outside(red)){
+		red = _red + (s * rand * signs[0] * -1);
+	}
+	s = s - (s * rand);
+	blue = _blue + (s * rand * signs[1]);
+	if(outside(blue)){
+		blue = _blue + (s * rand * signs[1] * -1);
+	}
+	s = s - (s * rand);
+	green = _green + (s * signs[2]);
+	if(outside(green)){
+		green = _green + (s * signs[2] * -1);
+	}
+	//console.log(signs);
+	//console.log([red, green, blue]);
+	document.body.style.backgroundColor = "rgb(" + red + ", " + green + ", " + blue + ")";
+	const str = "rgb(" + (255-red) + ", " + (255-green) + ", " + (255-blue) + ")";
+	console.log(str);
+	h1.style.color = str;
+	window.setTimeout(function(){loop2(red, green, blue)}, 100);
+}
 function loop(){
 	const unix = Math.floor(time / 1000);
 	const seconds = unix % 60;
@@ -67,7 +112,8 @@ function loop(){
 		if((right_hour == hours) && (right_minute == minutes)){
 			right_time = true;
 			h1.hidden = false;
-			document.body.style.backgroundColor = "cyan";
+			loop2();		
+			count++;
 		}
 	}
 	if(right_time){
@@ -79,7 +125,6 @@ function loop(){
 try{
 	const what_comes_after_the_question_mark = url.split("?")[1].split(":");	
 	if(what_comes_after_the_question_mark.length == 2){
-		debugger;
 		right_minute = Number(what_comes_after_the_question_mark[1]);
 		right_hour = Number(what_comes_after_the_question_mark[0]);
 		right_time = false;
